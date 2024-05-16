@@ -4,10 +4,92 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+
+    <link rel="stylesheet" href="style.css" />    
+
+    <title>Chromatic Alchemy</title>
+
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
+    <div class="container">
+      <h1 class="title">Color Palette Generator</h1>
+      <div class="search">
+        <div class="code">
+          <input type="text" id="search-input" placeholder="Color Code or Name" value="Skyblue" />
+          <span class="search-color"></span>
+        </div>
+        <label class="image" for="search-image">
+          <input type="file" id="search-image" hidden />
+          <i class="fas fa-image"></i>
+        </label>
+      </div>
+      <div class="options">
+        <select name="" id="palette-type">
+          <option value="analogous">Analogous</option>
+          <option value="monochromatic">Monochromatic</option>
+          <option value="triadic">Triadic</option>
+          <option value="compound">Compound</option>
+          <option value="shades">Shades</option>
+          <option value="tetradic">Tetradic</option>
+          <option value="square">Square</option>
+        </select>
+        <select name="" id="palette-count">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6" selected>6</option>
+        </select>
+      </div>
+      <div class="or" id="random-btn">
+        Or Generate Random
+      </div>
+      <p class="label" id="type-text">
+        Analogous palette
+      </p>
+      <div class="palette" id="palette">
+        <!-- Colour added Using JS -->
+      </div>
+      <p class="label" id="type-text">
+        Related Colors
+      </p>
+      <div class="palette" id="related">
+        <!-- Colour added Using JS -->
+      </div>
+      <div class="image-colors-wrapper hidden">
+        <p class="label" id="type-text">
+          Image Colors
+        </p>
+        <div class="palette" id="image-colors">
+          <!-- Colour added Using JS -->
+        </div>
+      </div>
+      <div class="or">Download Palette</div>
+      <div class="options">
+        <input type="text" id="download-name" placeholder="Filename" value="Palette">
+      </div>
+      <div class="options">
+        <select name="" id="download-format">
+          <option value="png">PNG</option>
+          <option value="svg">SVG</option>
+          <option value="css">CSS</option>
+          <option value="json">JSON</option>
+        </select>
+        <button class="btn" id="download-btn">Download</button>
+      </div>
+      <div class="toast">Toast Message</div>
+      <label for="toggle" class="switch">
+        <input type="checkbox" id="toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  
+    <!-- IMAGE COLOR EXTRACTOR -->
+    <script src="https://unpkg.com/color.js@1.2.0/dist/color.js"></script>
+    <script src="script.js"></script>
+  
+    <script></script>
   </body>
-</html>
+  
+  </html>
