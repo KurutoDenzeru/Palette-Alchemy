@@ -5,7 +5,11 @@
     <link rel="icon" type="image/svg+xml" href="/chromatic.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="style.css" />    
+    <link rel="stylesheet" href="./style.css" />      
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>Chromatic Alchemy</title>
 
@@ -13,12 +17,19 @@
   <body>
     <div class="container">
       <h1 class="title">Color Palette Generator</h1>
+      <!-- Search Box -->
       <div class="search">
         <div class="code">
           <input type="text" id="search-input" placeholder="Color Code or Name" value="Skyblue" />
           <span class="search-color"></span>
         </div>
+        <label class="image" for="search-image">
+          <input type="file" id="search-image" hidden />
+          <i class="fas fa-image"></i>
+        </label>
       </div>
+
+      <!-- Dropdown Option -->
       <div class="options">
         <select name="" id="palette-type">
           <option value="analogous">Analogous</option>
@@ -38,9 +49,11 @@
           <option value="6" selected>6</option>
         </select>
       </div>
+      <!-- Generate Random -->
       <div class="or" id="random-btn">
         Or Generate Random
       </div>
+
       <p class="label" id="type-text">
         Analogous palette
       </p>
