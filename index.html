@@ -16,12 +16,13 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="title">Color Palette Generator</h1>
+      <h1 class="text-4xl font-extrabold text-gray-800">Chromatic Alchemy</h1>
       <!-- Search Box -->
       <div class="search">
         <div class="code">
-          <input type="text" id="search-input" placeholder="Color Code or Name" value="Skyblue" />
+          <input type="text" id="search-input" value="Skyblue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Color Code or Name" />
           <span class="search-color"></span>
+
         </div>
         <label class="image" for="search-image">
           <input type="file" id="search-image" hidden />
@@ -31,7 +32,7 @@
 
       <!-- Dropdown Option -->
       <div class="options">
-        <select name="" id="palette-type">
+        <select name="" id="palette-type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option value="analogous">Analogous</option>
           <option value="monochromatic">Monochromatic</option>
           <option value="triadic">Triadic</option>
@@ -40,6 +41,7 @@
           <option value="tetradic">Tetradic</option>
           <option value="square">Square</option>
         </select>
+        <!-- Pallete Count -->
         <select name="" id="palette-count">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -49,6 +51,8 @@
           <option value="6" selected>6</option>
         </select>
       </div>
+
+
       <!-- Generate Random -->
       <div class="or" id="random-btn">
         Or Generate Random
@@ -87,11 +91,6 @@
         </select>
         <button class="btn" id="download-btn">Download</button>
       </div>
-      <div class="toast">Toast Message</div>
-      <label for="toggle" class="switch">
-        <input type="checkbox" id="toggle" />
-        <span class="slider"></span>
-      </label>
     </div>
   
     <!-- IMAGE COLOR EXTRACTOR -->
