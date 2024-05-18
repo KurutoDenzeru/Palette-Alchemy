@@ -20,7 +20,7 @@
       <!-- Search Box -->
       <div class="search">
         <div class="code">
-          <input type="text" id="search-input" value="Skyblue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Color Code or Name" />
+          <input type="text" id="search-input" value="Skyblue" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Color Code or Name" />
           <span class="search-color"></span>
 
         </div>
@@ -32,7 +32,7 @@
 
       <!-- Dropdown Option -->
       <div class="options">
-        <select name="" id="palette-type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select name="" id="palette-type" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option value="analogous">Analogous</option>
           <option value="monochromatic">Monochromatic</option>
           <option value="triadic">Triadic</option>
@@ -42,7 +42,7 @@
           <option value="square">Square</option>
         </select>
         <!-- Pallete Count -->
-        <select name="" id="palette-count">
+        <select name="" id="palette-count" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -54,8 +54,8 @@
 
 
       <!-- Generate Random -->
-      <div class="or" id="random-btn">
-        Or Generate Random
+      <div  id="random-btn" class="py-6">
+        <button type="button" id="random-btn" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generate Random</button>
       </div>
 
       <p class="label" id="type-text">
@@ -64,12 +64,15 @@
       <div class="palette" id="palette">
         <!-- Colour added Using JS -->
       </div>
+
       <p class="label" id="type-text">
         Related Colors
       </p>
       <div class="palette" id="related">
         <!-- Colour added Using JS -->
       </div>
+
+      <!-- Hidden Image Generated Pallete -->
       <div class="image-colors-wrapper hidden">
         <p class="label" id="type-text">
           Image Colors
@@ -78,6 +81,8 @@
           <!-- Colour added Using JS -->
         </div>
       </div>
+
+
       <div class="or">Download Palette</div>
       <div class="options">
         <input type="text" id="download-name" placeholder="Filename" value="Palette">
