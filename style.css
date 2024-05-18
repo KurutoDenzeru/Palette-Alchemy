@@ -74,14 +74,12 @@ div {
 
 input[type="text"] {
 	height: 60px;
-	line-height: 60px;
 	padding: 0 20px;
 	border: none;
 	outline: none;
 	width: 100%;
 	font-size: 1rem;
 	background: var(--primary-color);
-	color: var(--quaternary-color);
 }
 
 input[type="text"]::placeholder {
@@ -113,6 +111,7 @@ input[type="text"]:focus {
 	cursor: pointer;
 	background: var(--primary-color);
 	border: 1px dashed #ddd;
+  border-radius: 10px;
 }
 
 .search .image:hover {
@@ -150,11 +149,6 @@ select#palette-count {
 	transition: all 0.3s ease;
 }
 
-#random-btn:hover {
-	cursor: pointer;
-	color: var(--secondary-color);
-}
-
 .label {
 	width: 100%;
 	font-size: 14px;
@@ -170,6 +164,7 @@ select#palette-count {
 	display: flex;
 	gap: 4px;
 	overflow: hidden;
+  border-radius: 15px;
 	margin-bottom: 20px;
 }
 
@@ -243,65 +238,6 @@ select#palette-count {
 	background-color: var(--primary-color);
 }
 
-/* toast */
-
-.toast {
-	position: fixed;
-	top: -50px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: max-content;
-	padding: 10px 20px;
-	z-index: 999;
-	pointer-events: none;
-	color: var(--quaternary-color);
-	background-color: var(--secondary-color);
-	transition: all 0.15s ease-in-out;
-}
-
-.toast.show {
-	top: 20px;
-}
-
-/* Switch */
-
-.switch {
-	position: fixed;
-	display: flex;
-	bottom: 20px;
-	right: 20px;
-	align-items: center;
-	justify-content: center;
-}
-
-.switch .slider {
-	position: relative;
-	height: 40px;
-	width: 80px;
-	background-color: var(--primary-color);
-	cursor: pointer;
-	transition: all 0.3s ease-in;
-	z-index: 999;
-}
-
-.switch .slider::before {
-	position: absolute;
-	left: 5px;
-	bottom: 5px;
-	height: 30px;
-	width: 30px;
-	content: "";
-	background-color: var(--quaternary-color);
-	transition: all 0.3s ease-in;
-}
-
-.switch #toggle {
-	display: none;
-}
-
-.switch #toggle:checked ~ .slider::before {
-	transform: translateX(40px);
-}
 
 /* responsive */
 
@@ -350,16 +286,5 @@ select#palette-count {
 	.palette .color .icons div {
 		width: 20px;
 		height: 20px;
-	}
-	.switch .slider {
-		height: 25px;
-		width: 50px;
-	}
-	.switch .slider::before {
-		height: 15px;
-		width: 15px;
-	}
-	.switch #toggle:checked ~ .slider::before {
-		transform: translateX(25px);
 	}
 }
