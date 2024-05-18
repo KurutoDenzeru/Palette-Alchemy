@@ -14,7 +14,7 @@
     <title>Chromatic Alchemy</title>
 
   </head>
-  <body>
+  <body class="mx-auto flex h-screen">
     <div class="container">
       <h1 class="text-4xl font-extrabold text-gray-800">Chromatic Alchemy</h1>
       <!-- Search Box -->
@@ -52,13 +52,12 @@
         </select>
       </div>
 
-
       <!-- Generate Random -->
-      <div  id="random-btn" class="py-6">
+      <div  id="random-btn" class="pt-4">
         <button type="button" id="random-btn" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">Generate Random</button>
       </div>
 
-      <p class="label block mb-2 text-sm font-bold text-gray-900" id="type-text">
+      <p class="label block mb-2 mt-4 text-sm font-bold text-gray-900" id="type-text">
         Analogous palette
       </p>
       <div class="palette" id="palette">
@@ -82,20 +81,20 @@
         </div>
       </div>
 
-      <hr class="w-full h-1 mx-auto my-4 bg-gray-500 border-0 rounded md:my-10">
+      <hr class="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-10">
 
       <div class="gap-10 flex">
         <input type="text" id="download-name" value="File_Name" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Filename" />
       </div>
 
       <div class="flex mt-4 gap-4">
-        <select  id="download-format" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="download-format" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option value="png">PNG</option>
           <option value="svg">SVG</option>
           <option value="css">CSS</option>
           <option value="json">JSON</option>
         </select>
-        <button class="w-full p-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" id="download-btn">Download</button>
+        <button class="w-full block p-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none" id="download-btn">Download</button>
       </div>
     </div>
   
