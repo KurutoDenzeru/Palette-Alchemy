@@ -179,9 +179,6 @@ function generatePaletteHTML(type, container) {
 					<div class="copy-color" title="Copy Color Code">
 						<i class="far fa-copy"></i>
 					</div>
-					<div class="generate-palette" title="Generate Palette">
-						<i class="fas fa-palette"></i>
-					</div>
 				</div>
 				<div class="code">${color}</div>
 			</div>
