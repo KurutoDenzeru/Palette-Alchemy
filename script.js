@@ -484,11 +484,3 @@ function downloadPaletteAsJson(colors, name) {
 }
 
 const toggle = document.querySelector("#toggle");
-
-toggle.addEventListener("change", (e) => {
-	if (e.target.checked) {
-		document.body.classList.add("dark");
-	} else {
-		document.body.classList.remove("dark");
-	}
-});
