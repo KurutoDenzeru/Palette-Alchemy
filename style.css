@@ -22,14 +22,6 @@ body {
 	background-color: var(--body-bg-color);
 }
 
-body.dark {
-	--primary-color: #303030;
-	--secondary-color: #ffffff;
-	--tertiary-color: #ffffff;
-	--quaternary-color: #9ea6ab;
-	--body-bg-color: #1e1e1e;
-}
-
 div {
 	width: 100%;
 }
