@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
 	--primary-color: #f4f6fc;
 	--secondary-color: #303030;
@@ -94,7 +93,7 @@ input[type="text"]:focus {
 }
 
 .search .image {
-	width:40px;
+	width: 40px;
 	height: 40px;
 	display: flex;
 	align-items: center;
@@ -103,7 +102,7 @@ input[type="text"]:focus {
 	cursor: pointer;
 	background: var(--primary-color);
 	border: 2px dashed #ddd;
-  border-radius: 8px;
+	border-radius: 8px;
 }
 
 .search .image:hover {
@@ -111,7 +110,7 @@ input[type="text"]:focus {
 }
 
 select {
-  outline: none;
+	outline: none;
 	color: var(--quaternary-color);
 	background-color: var(--primary-color);
 }
@@ -134,7 +133,7 @@ select#palette-count {
 	display: flex;
 	gap: 4px;
 	overflow: hidden;
-  border-radius: 15px;
+	border-radius: 15px;
 	margin-bottom: 20px;
 }
 
@@ -215,39 +214,49 @@ select#palette-count {
 	.container {
 		justify-content: flex-start;
 	}
+
 	.title {
 		font-size: 24px;
 	}
+
 	.desc {
 		font-size: 14px;
 	}
+
 	input[type="text"] {
 		font-size: 14px;
 	}
+
 	.search .code .search-color {
 		width: 15px;
 		height: 15px;
 		right: 10px;
 	}
+
 	.search .image {
 		width: 48px;
 		height: 48px;
 	}
+
 	.btn {
 		height: 50px;
 		font-size: 14px;
 	}
+
 	.palette .color {
 		height: 70px;
 	}
+
 	.palette .color .overlay {
 		font-size: 10px;
 	}
+
 	.palette .color .code {
 		line-height: 20px;
 		width: 50px;
 		padding: 0 5px;
 	}
+
 	.palette .color .icons div {
 		width: 20px;
 		height: 20px;
