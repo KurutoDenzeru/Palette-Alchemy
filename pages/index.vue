@@ -20,6 +20,13 @@ import HoverCardContent from '@/components/ui/hover-card/HoverCardContent.vue'
 import { useColorConversions } from '@/composables/palette/useColorConversions'
 import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
 import chroma from 'chroma-js'
+import Dialog from '@/components/ui/dialog/Dialog.vue'
+import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue'
+import DialogContent from '@/components/ui/dialog/DialogContent.vue'
+import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
+import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
+import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
+import DownloadIcon from '@/components/icons/DownloadIcon'
 
 const MODES = [
   'analogous',
@@ -98,7 +105,39 @@ watch([paletteMode, gridColumns], () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-background text-foreground gap-8 py-8">
+  <div class="min-h-screen flex flex-col bg-background text-foreground gap-8 py-8 relative">
+    <!-- Download Dialog Trigger (top right) -->
+    <Dialog>
+      <DialogTrigger as-child>
+        <Button
+          class="fixed top-4 right-4 z-50 rounded-md shadow-md bg-card hover:bg-accent transition-colors"
+          aria-label="Open Export Dialog"
+          variant="outline"
+        >
+          <DownloadIcon class="w-6 h-6 md:w-7 md:h-7 text-primary" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent class="max-w-[95vw] w-full sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Export Palette</DialogTitle>
+        </DialogHeader>
+        <div class="flex flex-col gap-2">
+          <label class="text-xs font-medium">File Name</label>
+          <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
+          <label class="text-xs font-medium">Export Format</label>
+          <Select v-model="exportFormat">
+            <SelectTrigger class="w-full">{{ exportFormat }}</SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">{{ fmt.label }}</SelectItem>
+            </SelectContent>
+          </Select>
+          <DialogFooter>
+            <Button class="mt-4 w-full">Export</Button>
+          </DialogFooter>
+        </div>
+      </DialogContent>
+    </Dialog>
+
     <!-- Card 1: Controls -->
     <Card class="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -217,26 +256,5 @@ watch([paletteMode, gridColumns], () => {
         </CardContent>
       </Card>
     </div>
-
-    <!-- Card: Export -->
-    <Card class="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Export Palette</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div class="flex flex-col gap-2">
-          <label class="text-xs font-medium">File Name</label>
-          <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
-          <label class="text-xs font-medium">Export Format</label>
-          <Select v-model="exportFormat">
-            <SelectTrigger class="w-40">{{ exportFormat }}</SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">{{ fmt.label }}</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button class="mt-4">Export</Button>
-        </div>
-      </CardContent>
-    </Card>
   </div>
 </template>
