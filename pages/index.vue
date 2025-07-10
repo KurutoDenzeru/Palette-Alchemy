@@ -27,6 +27,7 @@ import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
 import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
 import DownloadIcon from '@/components/icons/DownloadIcon'
+import { FileDown, FileJson, FileImage, FileType2, FileText } from 'lucide-vue-next'
 
 const MODES = [
   'analogous',
@@ -58,11 +59,11 @@ const colorConversions = useColorConversions(colorInput)
 const colorAnalysis = useColorAnalysis(colorInput)
 
 const exportFormats = [
-  { label: 'PNG', value: 'png' },
-  { label: 'JPEG', value: 'jpeg' },
-  { label: 'WEBP', value: 'webp' },
-  { label: 'CSS', value: 'css' },
-  { label: 'JSON', value: 'json' }
+  { label: 'PNG', value: 'png', icon: FileImage },
+  { label: 'JPEG', value: 'jpeg', icon: FileImage },
+  { label: 'WEBP', value: 'webp', icon: FileImage },
+  { label: 'CSS', value: 'css', icon: FileText },
+  { label: 'JSON', value: 'json', icon: FileJson }
 ]
 const exportFormat = ref('png')
 
@@ -126,9 +127,15 @@ watch([paletteMode, gridColumns], () => {
           <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
           <label class="text-xs font-medium">Export Format</label>
           <Select v-model="exportFormat">
-            <SelectTrigger class="w-full">{{ exportFormat }}</SelectTrigger>
+            <SelectTrigger class="w-full">
+              <component :is="exportFormats.find(f => f.value === exportFormat)?.icon" class="size-4 mr-2" />
+              {{ exportFormat }}
+            </SelectTrigger>
             <SelectContent>
-              <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">{{ fmt.label }}</SelectItem>
+              <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">
+                <component :is="fmt.icon" class="size-4 mr-2" />
+                {{ fmt.label }}
+              </SelectItem>
             </SelectContent>
           </Select>
           <DialogFooter>
