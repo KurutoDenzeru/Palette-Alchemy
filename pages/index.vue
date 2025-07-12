@@ -44,7 +44,7 @@
 
   const colorInput = ref('#e63946')
   const paletteMode = ref<PaletteMode>('analogous')
-  const gridColumns = ref([18])
+  const gridColumns = ref([16])
   const paletteName = ref('My Palette')
 
   const {
@@ -137,9 +137,9 @@
           <div class="flex flex-col items-start w-full">
             <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
                 }}</span></label>
-            <Slider v-model="gridColumns" :min="6" :max="36" :step="4" class="w-full" />
+            <Slider v-model="gridColumns" :min="4" :max="32" :step="4" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
-              <span v-for="n in [6, 10, 14, 18, 22, 26, 30, 34, 36]" :key="n">{{ n }}</span>
+              <span v-for="n in [4, 8, 12, 16, 20, 24, 28, 32]" :key="n">{{ n }}</span>
             </div>
           </div>
           <div class="flex gap-2 mt-2 flex-wrap">
@@ -197,23 +197,23 @@
     <!-- Main Content -->
     <main class="flex-1 min-h-screen flex flex-col gap-8 justify-center items-center px-4 md:px-8 py-4 md:py-8">
       <!-- Generated Palette & Related Colors -->
-      <section>
-        <Card class="w-full mx-auto">
+      <section class="w-full mx-auto">
+        <Card>
           <CardHeader>
             <CardTitle>Generated Palette:</CardTitle>
           </CardHeader>
           <CardContent>
             <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`"
               style="display: flex; flex-wrap: wrap;">
-              <HoverCard v-for="color in palette" :key="color.hex">
+              <HoverCard v-for="color in palette" :key="color.hex" class="w-full">
                 <HoverCardTrigger>
                   <div
-                    class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white"
-                    :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
+                    class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white hover:bg-accent/20"
+                    :style="{ background: color.hex, width: '73px', height: '75px' }" @click="handleCopy(color.hex)" />
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div
-                    class="flex flex-col gap-4 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                    class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[350px] transition-colors">
                     <div class="flex items-center justify-between">
                       <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
                           color.hex }}</span></span>
@@ -261,13 +261,13 @@
                 <HoverCard v-for="color in secondaryPalette" :key="color.hex">
                   <HoverCardTrigger>
                     <div
-                      class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white"
-                      :style="{ background: color.hex, width: '64px', height: '64px' }"
+                      class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white hover:bg-accent/20"
+                      :style="{ background: color.hex, width: '73px', height: '75px' }"
                       @click="handleCopy(color.hex)" />
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <div
-                      class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                      class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[350px] transition-colors">
                       <div class="flex items-center justify-between">
                         <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
                             color.hex }}</span></span>
