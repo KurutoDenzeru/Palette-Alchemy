@@ -1,109 +1,109 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { usePalette } from '@/composables/palette/usePalette'
-import Button from '@/components/ui/button/Button.vue'
-import Input from '@/components/ui/input/Input.vue'
-import Select from '@/components/ui/select/Select.vue'
-import SelectTrigger from '@/components/ui/select/SelectTrigger.vue'
-import SelectContent from '@/components/ui/select/SelectContent.vue'
-import SelectItem from '@/components/ui/select/SelectItem.vue'
-import Slider from '@/components/ui/slider/Slider.vue'
-import Card from '@/components/ui/card/Card.vue'
-import CardHeader from '@/components/ui/card/CardHeader.vue'
-import CardTitle from '@/components/ui/card/CardTitle.vue'
-import CardContent from '@/components/ui/card/CardContent.vue'
-import CardFooter from '@/components/ui/card/CardFooter.vue'
-import CardDescription from '@/components/ui/card/CardDescription.vue'
-import HoverCard from '@/components/ui/hover-card/HoverCard.vue'
-import HoverCardTrigger from '@/components/ui/hover-card/HoverCardTrigger.vue'
-import HoverCardContent from '@/components/ui/hover-card/HoverCardContent.vue'
-import { useColorConversions } from '@/composables/palette/useColorConversions'
-import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
-import chroma from 'chroma-js'
-import Dialog from '@/components/ui/dialog/Dialog.vue'
-import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue'
-import DialogContent from '@/components/ui/dialog/DialogContent.vue'
-import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
-import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
-import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
+  import { ref, computed, watch } from 'vue'
+  import { usePalette } from '@/composables/palette/usePalette'
+  import Button from '@/components/ui/button/Button.vue'
+  import Input from '@/components/ui/input/Input.vue'
+  import Select from '@/components/ui/select/Select.vue'
+  import SelectTrigger from '@/components/ui/select/SelectTrigger.vue'
+  import SelectContent from '@/components/ui/select/SelectContent.vue'
+  import SelectItem from '@/components/ui/select/SelectItem.vue'
+  import Slider from '@/components/ui/slider/Slider.vue'
+  import Card from '@/components/ui/card/Card.vue'
+  import CardHeader from '@/components/ui/card/CardHeader.vue'
+  import CardTitle from '@/components/ui/card/CardTitle.vue'
+  import CardContent from '@/components/ui/card/CardContent.vue'
+  import CardFooter from '@/components/ui/card/CardFooter.vue'
+  import CardDescription from '@/components/ui/card/CardDescription.vue'
+  import HoverCard from '@/components/ui/hover-card/HoverCard.vue'
+  import HoverCardTrigger from '@/components/ui/hover-card/HoverCardTrigger.vue'
+  import HoverCardContent from '@/components/ui/hover-card/HoverCardContent.vue'
+  import { useColorConversions } from '@/composables/palette/useColorConversions'
+  import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
+  import chroma from 'chroma-js'
+  import Dialog from '@/components/ui/dialog/Dialog.vue'
+  import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue'
+  import DialogContent from '@/components/ui/dialog/DialogContent.vue'
+  import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
+  import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
+  import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
   import { FileJson, FileImage, FileText, Download, Palette, Shuffle, Copy } from 'lucide-vue-next'
-import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
+  import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
 
-const MODES = [
-  'analogous',
-  'monochrome',
-  'complementary',
-  'triadic',
-  'compound',
-  'shades',
-  'tetradic',
-  'square',
-] as const
+  const MODES = [
+    'analogous',
+    'monochrome',
+    'complementary',
+    'triadic',
+    'compound',
+    'shades',
+    'tetradic',
+    'square',
+  ] as const
 
-type PaletteMode = typeof MODES[number]
+  type PaletteMode = typeof MODES[number]
 
-const colorInput = ref('#e63946')
-const paletteMode = ref<PaletteMode>('analogous')
-const gridColumns = ref([4])
-const paletteName = ref('My Palette')
+  const colorInput = ref('#e63946')
+  const paletteMode = ref<PaletteMode>('analogous')
+  const gridColumns = ref([18])
+  const paletteName = ref('My Palette')
 
-const {
-  palette,
-  secondaryPalette,
-  isLoading,
-  generatePalette,
-  generateRandom,
-} = usePalette(colorInput, paletteMode)
+  const {
+    palette,
+    secondaryPalette,
+    isLoading,
+    generatePalette,
+    generateRandom,
+  } = usePalette(colorInput, paletteMode)
 
-const colorConversions = useColorConversions(colorInput)
-const colorAnalysis = useColorAnalysis(colorInput)
+  const colorConversions = useColorConversions(colorInput)
+  const colorAnalysis = useColorAnalysis(colorInput)
 
-const exportFormats = [
-  { label: 'PNG', value: 'png', icon: FileImage },
-  { label: 'JPEG', value: 'jpeg', icon: FileImage },
-  { label: 'WEBP', value: 'webp', icon: FileImage },
-  { label: 'CSS', value: 'css', icon: FileText },
-  { label: 'JSON', value: 'json', icon: FileJson }
-]
-const exportFormat = ref('png')
+  const exportFormats = [
+    { label: 'PNG', value: 'png', icon: FileImage },
+    { label: 'JPEG', value: 'jpeg', icon: FileImage },
+    { label: 'WEBP', value: 'webp', icon: FileImage },
+    { label: 'CSS', value: 'css', icon: FileText },
+    { label: 'JSON', value: 'json', icon: FileJson }
+  ]
+  const exportFormat = ref('png')
 
-const handleCopy = (hex: string) => {
-  navigator.clipboard.writeText(hex)
-}
-
-const gridClass = computed(() => `grid-cols-${gridColumns.value[0]}`)
-
-// Helper to get conversions for any color
-const getColorConversions = (hex: string) => {
-  if (!chroma.valid(hex)) return { hex: '', rgb: '', hsl: '', hwb: '', cmyk: '', lch: '', keyword: '' }
-  const c = chroma(hex)
-  const toHwb = (c: chroma.Color) => {
-    const [h] = c.hsl()
-    const w = Math.min(...c.rgb()) / 255
-    const b = 1 - Math.max(...c.rgb()) / 255
-    return `hwb(${Math.round(h)}, ${(w * 100).toFixed(0)}%, ${(b * 100).toFixed(0)}%)`
+  const handleCopy = (hex: string) => {
+    navigator.clipboard.writeText(hex)
   }
-  const getKeyword = (hex: string) => {
-    try { return chroma(hex).name() } catch { return '' }
-  }
-  return {
-    hex: c.hex(),
-    rgb: c.css('rgb'),
-    hsl: c.css('hsl'),
-    hwb: toHwb(c),
-    cmyk: c.cmyk().map(x => Math.round(x)).join(','),
-    lch: c.lch().map(x => Math.round(x)).join(','),
-    keyword: getKeyword(c.hex())
-  }
-}
 
-// Regenerate palette when paletteMode or gridColumns changes
-watch([paletteMode, () => gridColumns.value[0]], () => {
+  const gridClass = computed(() => `grid-cols-${gridColumns.value[0]}`)
+
+  // Helper to get conversions for any color
+  const getColorConversions = (hex: string) => {
+    if (!chroma.valid(hex)) return { hex: '', rgb: '', hsl: '', hwb: '', cmyk: '', lch: '', keyword: '' }
+    const c = chroma(hex)
+    const toHwb = (c: chroma.Color) => {
+      const [h] = c.hsl()
+      const w = Math.min(...c.rgb()) / 255
+      const b = 1 - Math.max(...c.rgb()) / 255
+      return `hwb(${Math.round(h)}, ${(w * 100).toFixed(0)}%, ${(b * 100).toFixed(0)}%)`
+    }
+    const getKeyword = (hex: string) => {
+      try { return chroma(hex).name() } catch { return '' }
+    }
+    return {
+      hex: c.hex(),
+      rgb: c.css('rgb'),
+      hsl: c.css('hsl'),
+      hwb: toHwb(c),
+      cmyk: c.cmyk().map(x => Math.round(x)).join(','),
+      lch: c.lch().map(x => Math.round(x)).join(','),
+      keyword: getKeyword(c.hex())
+    }
+  }
+
+  // Regenerate palette when paletteMode or gridColumns changes
+  watch([paletteMode, () => gridColumns.value[0]], () => {
+    generatePalette(gridColumns.value[0])
+  })
+
+  // On initial load, generate palette with correct count
   generatePalette(gridColumns.value[0])
-})
-
-// On initial load, generate palette with correct count
-generatePalette(gridColumns.value[0])
 </script>
 
 <template>
@@ -136,10 +136,10 @@ generatePalette(gridColumns.value[0])
           </Select>
           <div class="flex flex-col items-start w-full">
             <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
-                }}</span></label>
-            <Slider v-model="gridColumns" :min="2" :max="12" :step="2" class="w-full" />
+            }}</span></label>
+            <Slider v-model="gridColumns" :min="6" :max="36" :step="4" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
-              <span v-for="n in [2,4,6,8,10,12]" :key="n">{{ n }}</span>
+              <span v-for="n in [6, 10, 14, 18, 22, 26, 30, 34, 36]" :key="n">{{ n }}</span>
             </div>
           </div>
           <div class="flex gap-2 mt-2 flex-wrap">
@@ -203,36 +203,53 @@ generatePalette(gridColumns.value[0])
             <CardTitle>Generated Palette:</CardTitle>
           </CardHeader>
           <CardContent>
-            <div :class="`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`" style="display: flex; flex-wrap: wrap;">
+            <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`"
+              style="display: flex; flex-wrap: wrap;">
               <HoverCard v-for="color in palette" :key="color.hex">
                 <HoverCardTrigger>
-                  <div class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white" :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
+                  <div
+                    class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white"
+                    :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
                 </HoverCardTrigger>
                 <HoverCardContent>
-                  <div class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                  <div
+                    class="flex flex-col gap-4 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
                     <div class="flex items-center justify-between">
-                      <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(color.hex)" />
+                      <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
+                          color.hex }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(color.hex)" />
                     </div>
                     <div class="flex items-center justify-between">
-                      <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).rgb)" />
+                      <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{
+                          getColorConversions(color.hex).rgb }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(getColorConversions(color.hex).rgb)" />
                     </div>
                     <div class="flex items-center justify-between">
-                      <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hsl)" />
+                      <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{
+                          getColorConversions(color.hex).hsl }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(getColorConversions(color.hex).hsl)" />
                     </div>
                     <div class="flex items-center justify-between">
-                      <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hwb)" />
+                      <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{
+                          getColorConversions(color.hex).hwb }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(getColorConversions(color.hex).hwb)" />
                     </div>
                     <div class="flex items-center justify-between">
-                      <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).cmyk)" />
+                      <span>CMYK: <span class="cursor-pointer"
+                          @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
+                          getColorConversions(color.hex).cmyk }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(getColorConversions(color.hex).cmyk)" />
                     </div>
                     <div class="flex items-center justify-between">
-                      <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
-                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).lch)" />
+                      <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{
+                          getColorConversions(color.hex).lch }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                        @click="handleCopy(getColorConversions(color.hex).lch)" />
                     </div>
                   </div>
                 </HoverCardContent>
@@ -240,36 +257,57 @@ generatePalette(gridColumns.value[0])
             </div>
             <div class="mt-6">
               <CardTitle class="text-base mb-2">Related Colors:</CardTitle>
-              <div class="flex gap-4 flex-wrap">
+              <div class="flex gap-2 flex-wrap">
                 <HoverCard v-for="color in secondaryPalette" :key="color.hex">
                   <HoverCardTrigger>
-                    <div class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white" :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
+                    <div
+                      class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white"
+                      :style="{ background: color.hex, width: '64px', height: '64px' }"
+                      @click="handleCopy(color.hex)" />
                   </HoverCardTrigger>
                   <HoverCardContent>
-                    <div class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                    <div
+                      class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
                       <div class="flex items-center justify-between">
-                        <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(color.hex)" />
+                        <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
+                            color.hex }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(color.hex)" />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).rgb)" />
+                        <span>RGB: <span class="cursor-pointer"
+                            @click="handleCopy(getColorConversions(color.hex).rgb)">{{
+                            getColorConversions(color.hex).rgb }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(getColorConversions(color.hex).rgb)" />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hsl)" />
+                        <span>HSL: <span class="cursor-pointer"
+                            @click="handleCopy(getColorConversions(color.hex).hsl)">{{
+                            getColorConversions(color.hex).hsl }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(getColorConversions(color.hex).hsl)" />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hwb)" />
+                        <span>HWB: <span class="cursor-pointer"
+                            @click="handleCopy(getColorConversions(color.hex).hwb)">{{
+                            getColorConversions(color.hex).hwb }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(getColorConversions(color.hex).hwb)" />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).cmyk)" />
+                        <span>CMYK: <span class="cursor-pointer"
+                            @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
+                            getColorConversions(color.hex).cmyk }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(getColorConversions(color.hex).cmyk)" />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
-                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).lch)" />
+                        <span>LCH: <span class="cursor-pointer"
+                            @click="handleCopy(getColorConversions(color.hex).lch)">{{
+                            getColorConversions(color.hex).lch }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary"
+                          @click="handleCopy(getColorConversions(color.hex).lch)" />
                       </div>
                     </div>
                   </HoverCardContent>
@@ -289,7 +327,7 @@ generatePalette(gridColumns.value[0])
             <ul class="text-sm space-y-1 font-mono">
               <li>Valid CSS Color: <span
                   :class="{ 'text-green-600': colorAnalysis.isValid, 'text-red-600': !colorAnalysis.isValid }">{{
-                  colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
+                    colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
               <li>Format: {{ colorAnalysis.format }}</li>
               <li>Hue: {{ colorAnalysis.hue }}°</li>
               <li>Brightness: {{ colorAnalysis.brightness }}%</li>
