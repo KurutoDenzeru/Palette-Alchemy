@@ -119,9 +119,11 @@ watch([paletteMode, gridColumns], () => {
           <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
-            <SelectTrigger class="w-full">{{ paletteMode }}</SelectTrigger>
+            <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
             <SelectContent>
-              <SelectItem v-for="mode in MODES" :key="mode" :value="mode">{{ mode }}</SelectItem>
+              <SelectItem v-for="mode in MODES" :key="mode" :value="mode" class="capitalize">
+                {{ mode }}
+              </SelectItem>
             </SelectContent>
           </Select>
           <div class="flex flex-col items-start w-full">
