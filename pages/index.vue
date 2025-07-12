@@ -26,8 +26,7 @@ import DialogContent from '@/components/ui/dialog/DialogContent.vue'
 import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
 import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
-import DownloadIcon from '@/components/icons/DownloadIcon'
-import { FileDown, FileJson, FileImage, FileType2, FileText } from 'lucide-vue-next'
+  import { FileJson, FileImage, FileText, Download, Palette, Shuffle } from 'lucide-vue-next'
 
 const MODES = [
   'analogous',
@@ -111,6 +110,10 @@ watch([paletteMode, gridColumns], () => {
     <aside
       class="w-full md:max-w-xs md:min-h-screen bg-card border-b md:border-b-0 md:border-r px-4 md:px-6 py-4 md:py-8 flex flex-col gap-8 md:sticky md:top-0 z-20">
       <div>
+        <div class="flex items-center gap-3 mb-4">
+          <NuxtImg src="/pallete.png" alt="Palette Alchemy Logo" class="w-16 h-16" loading="lazy" />
+          <span class="text-xl font-bold tracking-tight">Palette Alchemy</span>
+        </div>
         <h2 class="text-lg font-semibold mb-1">Palette Controls</h2>
         <p class="text-muted-foreground text-sm mb-4">Pick a color, palette mode, and grid size. Generate or randomize
           your palette.</p>
@@ -135,8 +138,14 @@ watch([paletteMode, gridColumns], () => {
             </div>
           </div>
           <div class="flex gap-2 mt-2 flex-wrap">
-            <Button @click="generatePalette" :disabled="isLoading" class="w-full">Generate Palette</Button>
-            <Button @click="generateRandom" variant="outline" class="w-full">Generate Random</Button>
+            <Button @click="generatePalette" :disabled="isLoading" class="w-full">
+              <Palette class="w-5 h-5" />
+              Generate Palette
+            </Button>
+            <Button @click="generateRandom" variant="outline" class="w-full">
+              <Shuffle class="w-5 h-5" />
+              Generate Random
+            </Button>
           </div>
         </div>
       </div>
@@ -147,7 +156,7 @@ watch([paletteMode, gridColumns], () => {
             <Button
               class="w-full flex items-center justify-center gap-2 rounded-md shadow-md bg-card hover:bg-accent transition-colors"
               aria-label="Open Export Dialog" variant="outline">
-              <DownloadIcon class="w-5 h-5 text-primary" />
+              <Download class="w-5 h-5 text-primary" />
               <span>Export Palette</span>
             </Button>
           </DialogTrigger>
