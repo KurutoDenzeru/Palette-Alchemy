@@ -12,22 +12,13 @@
   import CardHeader from '@/components/ui/card/CardHeader.vue'
   import CardTitle from '@/components/ui/card/CardTitle.vue'
   import CardContent from '@/components/ui/card/CardContent.vue'
-  import CardFooter from '@/components/ui/card/CardFooter.vue'
-  import CardDescription from '@/components/ui/card/CardDescription.vue'
   import HoverCard from '@/components/ui/hover-card/HoverCard.vue'
   import HoverCardTrigger from '@/components/ui/hover-card/HoverCardTrigger.vue'
   import HoverCardContent from '@/components/ui/hover-card/HoverCardContent.vue'
   import { useColorConversions } from '@/composables/palette/useColorConversions'
   import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
   import chroma from 'chroma-js'
-  import Dialog from '@/components/ui/dialog/Dialog.vue'
-  import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue'
-  import DialogContent from '@/components/ui/dialog/DialogContent.vue'
-  import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
-  import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
-  import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
-  import { FileJson, FileImage, FileText, Download, Palette, Shuffle, Copy } from 'lucide-vue-next'
-  import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
+  import ExportPaletteDialog from '@/components/ui/ExportPaletteDialog.vue'
 
   const MODES = [
     'analogous',
@@ -42,10 +33,9 @@
 
   type PaletteMode = typeof MODES[number]
 
-  const colorInput = ref('#e63946')
+  const colorInput = ref('#dc143c')
   const paletteMode = ref<PaletteMode>('analogous')
   const gridColumns = ref([16])
-  const paletteName = ref('My Palette')
 
   const {
     palette,
@@ -57,15 +47,6 @@
 
   const colorConversions = useColorConversions(colorInput)
   const colorAnalysis = useColorAnalysis(colorInput)
-
-  const exportFormats = [
-    { label: 'PNG', value: 'png', icon: FileImage },
-    { label: 'JPEG', value: 'jpeg', icon: FileImage },
-    { label: 'WEBP', value: 'webp', icon: FileImage },
-    { label: 'CSS', value: 'css', icon: FileText },
-    { label: 'JSON', value: 'json', icon: FileJson }
-  ]
-  const exportFormat = ref('png')
 
   const handleCopy = (hex: string) => {
     navigator.clipboard.writeText(hex)
@@ -138,7 +119,7 @@
             <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
                 }}</span></label>
             <Slider v-model="gridColumns" :min="4" :max="32" :step="4" class="w-full" />
-            <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
+            <div class="flex justify-between w-full mt-1 text-sm text-muted-foreground font-mono select-none">
               <span v-for="n in [4, 8, 12, 16, 20, 24, 28, 32]" :key="n">{{ n }}</span>
             </div>
           </div>
@@ -154,43 +135,10 @@
           </div>
         </div>
       </div>
+
       <!-- Download Dialog Trigger (responsive) -->
       <div class="mt-4 md:mt-auto">
-        <Dialog>
-          <DialogTrigger as-child>
-            <Button
-              class="w-full flex items-center justify-center gap-2 rounded-md shadow-md bg-card hover:bg-accent transition-colors"
-              aria-label="Open Export Dialog" variant="outline">
-              <Download class="w-5 h-5 text-primary" />
-              <span>Export Palette</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent class="max-w-[95vw] w-full sm:max-w-md text-left">
-            <DialogHeader class="text-left">
-              <DialogTitle>Export Palette</DialogTitle>
-            </DialogHeader>
-            <div class="flex flex-col gap-2 text-left">
-              <label class="text-xs font-medium">File Name</label>
-              <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
-              <label class="text-xs font-medium">Export Format</label>
-              <Select v-model="exportFormat">
-                <SelectTrigger class="w-full text-left">
-                  <component :is="exportFormats.find(f => f.value === exportFormat)?.icon" class="size-4 mr-2" />
-                  {{ exportFormat }}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">
-                    <component :is="fmt.icon" class="size-4 mr-2" />
-                    {{ fmt.label }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <DialogFooter>
-                <Button class="mt-4 w-full">Export</Button>
-              </DialogFooter>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <ExportPaletteDialog :palette="palette" :isLoading="isLoading" />
       </div>
     </aside>
 
