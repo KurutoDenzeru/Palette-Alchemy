@@ -26,7 +26,7 @@ import DialogContent from '@/components/ui/dialog/DialogContent.vue'
 import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
 import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
-  import { FileJson, FileImage, FileText, Download, Palette, Shuffle } from 'lucide-vue-next'
+  import { FileJson, FileImage, FileText, Download, Palette, Shuffle, Copy } from 'lucide-vue-next'
 import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
 
 const MODES = [
@@ -202,55 +202,74 @@ watch([paletteMode, gridColumns], () => {
             <CardTitle>Generated Palette</CardTitle>
           </CardHeader>
           <CardContent>
-            <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`"
-              style="display: flex; flex-wrap: wrap;">
+            <div :class="`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`" style="display: flex; flex-wrap: wrap;">
               <HoverCard v-for="color in palette" :key="color.hex">
                 <HoverCardTrigger>
-                  <div class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
-                    :style="{ background: color.hex, width: '48px', height: '48px' }" @click="handleCopy(color.hex)" />
+                  <div class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white" :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
                 </HoverCardTrigger>
                 <HoverCardContent>
-                  <div class="flex flex-col gap-1 text-xs font-mono">
-                    <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
-                        color.hex }}</span></span>
-                    <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{
-                        getColorConversions(color.hex).rgb }}</span></span>
-                    <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{
-                        getColorConversions(color.hex).hsl }}</span></span>
-                    <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{
-                        getColorConversions(color.hex).hwb }}</span></span>
-                    <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
-                        getColorConversions(color.hex).cmyk }}</span></span>
-                    <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{
-                        getColorConversions(color.hex).lch }}</span></span>
+                  <div class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(color.hex)" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).rgb)" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hsl)" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hwb)" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).cmyk)" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
+                      <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).lch)" />
+                    </div>
                   </div>
                 </HoverCardContent>
               </HoverCard>
             </div>
             <div class="mt-6">
               <CardTitle class="text-base mb-2">Related Colors</CardTitle>
-              <div class="flex gap-2 flex-wrap">
+              <div class="flex gap-4 flex-wrap">
                 <HoverCard v-for="color in secondaryPalette" :key="color.hex">
                   <HoverCardTrigger>
-                    <div class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
-                      :style="{ background: color.hex, width: '48px', height: '48px' }"
-                      @click="handleCopy(color.hex)" />
+                    <div class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white" :style="{ background: color.hex, width: '64px', height: '64px' }" @click="handleCopy(color.hex)" />
                   </HoverCardTrigger>
                   <HoverCardContent>
-                    <div class="flex flex-col gap-1 text-xs font-mono">
-                      <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
-                          color.hex }}</span></span>
-                      <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{
-                          getColorConversions(color.hex).rgb }}</span></span>
-                      <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{
-                          getColorConversions(color.hex).hsl }}</span></span>
-                      <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{
-                          getColorConversions(color.hex).hwb }}</span></span>
-                      <span>CMYK: <span class="cursor-pointer"
-                          @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
-                          getColorConversions(color.hex).cmyk }}</span></span>
-                      <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{
-                          getColorConversions(color.hex).lch }}</span></span>
+                    <div class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 p-2 rounded-md min-w-[220px]">
+                      <div class="flex items-center justify-between">
+                        <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(color.hex)" />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).rgb)" />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hsl)" />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).hwb)" />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).cmyk)" />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
+                        <Copy class="w-4 h-4 cursor-pointer text-muted-foreground hover:text-primary" @click="handleCopy(getColorConversions(color.hex).lch)" />
+                      </div>
                     </div>
                   </HoverCardContent>
                 </HoverCard>
