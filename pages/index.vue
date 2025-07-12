@@ -27,6 +27,7 @@ import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
 import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
   import { FileJson, FileImage, FileText, Download, Palette, Shuffle } from 'lucide-vue-next'
+import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
 
 const MODES = [
   'analogous',
@@ -119,7 +120,10 @@ watch([paletteMode, gridColumns], () => {
           your palette.</p>
         <div class="flex flex-col gap-4">
           <label class="text-sm font-medium">Base Color:</label>
-          <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
+          <div class="flex items-center gap-2 w-full">
+            <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
+            <ColorPicker v-model="colorInput" />
+          </div>
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
             <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
