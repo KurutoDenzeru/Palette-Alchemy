@@ -67,8 +67,6 @@ const exportFormats = [
 ]
 const exportFormat = ref('png')
 
-generatePalette()
-
 const handleCopy = (hex: string) => {
   navigator.clipboard.writeText(hex)
 }
@@ -100,9 +98,12 @@ const getColorConversions = (hex: string) => {
 }
 
 // Regenerate palette when paletteMode or gridColumns changes
-watch([paletteMode, gridColumns], () => {
-  generatePalette()
+watch([paletteMode, () => gridColumns.value[0]], () => {
+  generatePalette(gridColumns.value[0])
 })
+
+// On initial load, generate palette with correct count
+generatePalette(gridColumns.value[0])
 </script>
 
 <template>

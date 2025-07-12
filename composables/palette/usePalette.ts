@@ -33,17 +33,18 @@ export const usePalette = (
     return `rgba(${r},${g},${b},${a})`
   }
 
-  const generatePalette = () => {
+  // Accept count argument for number of colors
+  const generatePalette = (count = 6) => {
     isLoading.value = true
     try {
       const base = chroma.valid(colorInput.value) ? chroma(colorInput.value) : chroma.random()
       let colors: string[] = []
       switch (paletteMode.value) {
         case 'analogous':
-          colors = chroma.scale([base.set('hsl.h', '-30'), base.hex(), base.set('hsl.h', '+30')]).mode('lch').colors(6)
+          colors = chroma.scale([base.set('hsl.h', '-30'), base.hex(), base.set('hsl.h', '+30')]).mode('lch').colors(count)
           break
         case 'monochrome':
-          colors = chroma.scale([base.brighten(2).hex(), base.darken(2).hex()]).mode('lab').colors(6)
+          colors = chroma.scale([base.brighten(2).hex(), base.darken(2).hex()]).mode('lab').colors(count)
           break
         case 'complementary':
           colors = [base.hex(), base.set('hsl.h', "+180").hex()]
@@ -55,7 +56,7 @@ export const usePalette = (
           colors = [base.hex(), base.set('hsl.h', "+150").hex(), base.set('hsl.h', "+210").hex()]
           break
         case 'shades':
-          colors = chroma.scale([base.brighten(2).hex(), base.darken(2).hex()]).mode('lab').colors(6)
+          colors = chroma.scale([base.brighten(2).hex(), base.darken(2).hex()]).mode('lab').colors(count)
           break
         case 'tetradic':
           colors = [base.hex(), base.set('hsl.h', "+90").hex(), base.set('hsl.h', "+180").hex(), base.set('hsl.h', "+270").hex()]
@@ -64,7 +65,7 @@ export const usePalette = (
           colors = [base.hex(), base.set('hsl.h', "+90").hex(), base.set('hsl.h', "+180").hex(), base.set('hsl.h', "+270").hex()]
           break
         default:
-          colors = chroma.scale([base.set('hsl.h', '-30'), base.hex(), base.set('hsl.h', '+30')]).mode('lch').colors(6)
+          colors = chroma.scale([base.set('hsl.h', '-30'), base.hex(), base.set('hsl.h', '+30')]).mode('lch').colors(count)
       }
       palette.value = colors.map(hex => ({ hex, rgba: getRgba(hex) }))
       secondaryPalette.value = colors.map(hex => {
