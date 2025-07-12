@@ -127,7 +127,7 @@ watch([paletteMode, gridColumns], () => {
             </SelectContent>
           </Select>
           <div class="flex flex-col items-start w-full">
-            <label class="text-xs font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
+            <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
                 }}</span></label>
             <Slider v-model="gridColumns" :min="2" :max="12" :step="2" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
