@@ -197,9 +197,9 @@ watch([paletteMode, gridColumns], () => {
     <main class="flex-1 min-h-screen px-4 md:px-8 py-4 md:py-8 flex flex-col gap-8">
       <!-- Generated Palette & Related Colors -->
       <section>
-        <Card class="w-full max-w-2xl mx-auto">
+        <Card class="w-full mx-auto">
           <CardHeader>
-            <CardTitle>Generated Palette</CardTitle>
+            <CardTitle>Generated Palette:</CardTitle>
           </CardHeader>
           <CardContent>
             <div :class="`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`" style="display: flex; flex-wrap: wrap;">
@@ -238,7 +238,7 @@ watch([paletteMode, gridColumns], () => {
               </HoverCard>
             </div>
             <div class="mt-6">
-              <CardTitle class="text-base mb-2">Related Colors</CardTitle>
+              <CardTitle class="text-base mb-2">Related Colors:</CardTitle>
               <div class="flex gap-4 flex-wrap">
                 <HoverCard v-for="color in secondaryPalette" :key="color.hex">
                   <HoverCardTrigger>
@@ -279,10 +279,10 @@ watch([paletteMode, gridColumns], () => {
         </Card>
       </section>
       <!-- Color Analysis & Conversions -->
-      <section class="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section class="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Color Analysis</CardTitle>
+            <CardTitle>Color Analysis:</CardTitle>
           </CardHeader>
           <CardContent>
             <ul class="text-sm space-y-1 font-mono">
