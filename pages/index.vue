@@ -106,162 +106,180 @@ watch([paletteMode, gridColumns], () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-background text-foreground gap-8 py-8 relative">
-    <!-- Download Dialog Trigger (top right) -->
-    <Dialog>
-      <DialogTrigger as-child>
-        <Button
-          class="fixed top-4 right-4 z-50 rounded-md shadow-md bg-card hover:bg-accent transition-colors"
-          aria-label="Open Export Dialog"
-          variant="outline"
-        >
-          <DownloadIcon class="w-6 h-6 md:w-7 md:h-7 text-primary" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent class="max-w-[95vw] w-full sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Export Palette</DialogTitle>
-        </DialogHeader>
-        <div class="flex flex-col gap-2">
-          <label class="text-xs font-medium">File Name</label>
-          <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
-          <label class="text-xs font-medium">Export Format</label>
-          <Select v-model="exportFormat">
-            <SelectTrigger class="w-full">
-              <component :is="exportFormats.find(f => f.value === exportFormat)?.icon" class="size-4 mr-2" />
-              {{ exportFormat }}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">
-                <component :is="fmt.icon" class="size-4 mr-2" />
-                {{ fmt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <DialogFooter>
-            <Button class="mt-4 w-full">Export</Button>
-          </DialogFooter>
-        </div>
-      </DialogContent>
-    </Dialog>
-
-    <!-- Card 1: Controls -->
-    <Card class="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Palette Controls</CardTitle>
-        <CardDescription>Pick a color, palette mode, and grid size. Generate or randomize your palette.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div class="flex flex-col sm:flex-row gap-4 items-center">
-          <Input v-model="colorInput" class="w-full sm:w-40" placeholder="HEX or RGB" />
+  <div class="min-h-screen flex flex-col md:flex-row bg-background text-foreground">
+    <!-- Sidebar: Palette Controls (responsive: sidebar on md+, top bar on mobile) -->
+    <aside
+      class="w-full md:max-w-xs md:min-h-screen bg-card border-b md:border-b-0 md:border-r px-4 md:px-6 py-4 md:py-8 flex flex-col gap-8 md:sticky md:top-0 z-20">
+      <div>
+        <h2 class="text-lg font-semibold mb-1">Palette Controls</h2>
+        <p class="text-muted-foreground text-sm mb-4">Pick a color, palette mode, and grid size. Generate or randomize
+          your palette.</p>
+        <div class="flex flex-col gap-4">
+          <label class="text-sm font-medium">Base Color:</label>
+          <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
+          <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
-            <SelectTrigger class="w-40">{{ paletteMode }}</SelectTrigger>
+            <SelectTrigger class="w-full">{{ paletteMode }}</SelectTrigger>
             <SelectContent>
               <SelectItem v-for="mode in MODES" :key="mode" :value="mode">{{ mode }}</SelectItem>
             </SelectContent>
           </Select>
-          <div class="flex flex-col items-center w-40">
-            <label class="text-xs font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0] }}</span></label>
+          <div class="flex flex-col items-start w-full">
+            <label class="text-xs font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
+                }}</span></label>
             <Slider v-model="gridColumns" :min="2" :max="12" :step="2" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
               <span v-for="n in [2,4,6,8,10,12]" :key="n">{{ n }}</span>
             </div>
           </div>
-        </div>
-        <div class="flex gap-2 mt-4">
-          <Button @click="generatePalette" :disabled="isLoading">Generate Palette</Button>
-          <Button @click="generateRandom" variant="secondary">Generate Random</Button>
-        </div>
-      </CardContent>
-    </Card>
-
-    <!-- Card 2: Main Palette Display -->
-    <Card class="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Generated Palette</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div :class="`grid gap-2 grid-cols-${gridColumns[0]}`" style="display: flex;">
-          <HoverCard v-for="color in palette" :key="color.hex">
-            <HoverCardTrigger>
-              <div
-                class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
-                :style="{ background: color.hex, width: '48px', height: '48px' }"
-                @click="handleCopy(color.hex)"
-              />
-            </HoverCardTrigger>
-            <HoverCardContent>
-              <div class="flex flex-col gap-1 text-xs font-mono">
-                <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
-                <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
-                <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
-                <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
-                <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
-                <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
-        </div>
-        <div class="mt-6">
-          <CardTitle class="text-base mb-2">Related Colors</CardTitle>
-          <div class="flex gap-2">
-            <HoverCard v-for="color in secondaryPalette" :key="color.hex">
-              <HoverCardTrigger>
-                <div
-                  class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
-                  :style="{ background: color.hex, width: '48px', height: '48px' }"
-                  @click="handleCopy(color.hex)"
-                />
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <div class="flex flex-col gap-1 text-xs font-mono">
-                  <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{ color.hex }}</span></span>
-                  <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{ getColorConversions(color.hex).rgb }}</span></span>
-                  <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{ getColorConversions(color.hex).hsl }}</span></span>
-                  <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{ getColorConversions(color.hex).hwb }}</span></span>
-                  <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{ getColorConversions(color.hex).cmyk }}</span></span>
-                  <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{ getColorConversions(color.hex).lch }}</span></span>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+          <div class="flex gap-2 mt-2 flex-wrap">
+            <Button @click="generatePalette" :disabled="isLoading" class="w-full">Generate Palette</Button>
+            <Button @click="generateRandom" variant="outline" class="w-full">Generate Random</Button>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      <!-- Download Dialog Trigger (responsive) -->
+      <div class="mt-4 md:mt-auto">
+        <Dialog>
+          <DialogTrigger as-child>
+            <Button
+              class="w-full flex items-center justify-center gap-2 rounded-md shadow-md bg-card hover:bg-accent transition-colors"
+              aria-label="Open Export Dialog" variant="outline">
+              <DownloadIcon class="w-5 h-5 text-primary" />
+              <span>Export Palette</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent class="max-w-[95vw] w-full sm:max-w-md text-left">
+            <DialogHeader class="text-left">
+              <DialogTitle>Export Palette</DialogTitle>
+            </DialogHeader>
+            <div class="flex flex-col gap-2 text-left">
+              <label class="text-xs font-medium">File Name</label>
+              <Input v-model="paletteName" class="mb-2" placeholder="Palette name" />
+              <label class="text-xs font-medium">Export Format</label>
+              <Select v-model="exportFormat">
+                <SelectTrigger class="w-full text-left">
+                  <component :is="exportFormats.find(f => f.value === exportFormat)?.icon" class="size-4 mr-2" />
+                  {{ exportFormat }}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem v-for="fmt in exportFormats" :key="fmt.value" :value="fmt.value">
+                    <component :is="fmt.icon" class="size-4 mr-2" />
+                    {{ fmt.label }}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <DialogFooter>
+                <Button class="mt-4 w-full">Export</Button>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </aside>
 
-    <!-- Card Row: Analysis & Conversions -->
-    <div class="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Color Analysis</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul class="text-sm space-y-1 font-mono">
-            <li>Valid CSS Color: <span :class="{ 'text-green-600': colorAnalysis.isValid, 'text-red-600': !colorAnalysis.isValid }">{{ colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
-            <li>Format: {{ colorAnalysis.format }}</li>
-            <li>Hue: {{ colorAnalysis.hue }}°</li>
-            <li>Brightness: {{ colorAnalysis.brightness }}%</li>
-            <li>Luminance: {{ colorAnalysis.luminance }}%</li>
-            <li>Contrast on White: {{ colorAnalysis.contrast.toFixed(2) }}:1</li>
-          </ul>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Conversions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul class="text-sm space-y-1 font-mono">
-            <li>HEX: {{ colorConversions.hex }}</li>
-            <li>RGB: {{ colorConversions.rgb }}</li>
-            <li>HSL: {{ colorConversions.hsl }}</li>
-            <li>HWB: {{ colorConversions.hwb }}</li>
-            <li>CMYK: {{ colorConversions.cmyk }}</li>
-            <li>LCH: {{ colorConversions.lch }}</li>
-            <li>CSS Keyword: {{ colorConversions.keyword }}</li>
-          </ul>
-        </CardContent>
-      </Card>
-    </div>
+    <!-- Main Content -->
+    <main class="flex-1 min-h-screen px-4 md:px-8 py-4 md:py-8 flex flex-col gap-8">
+      <!-- Generated Palette & Related Colors -->
+      <section>
+        <Card class="w-full max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Generated Palette</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`"
+              style="display: flex; flex-wrap: wrap;">
+              <HoverCard v-for="color in palette" :key="color.hex">
+                <HoverCardTrigger>
+                  <div class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
+                    :style="{ background: color.hex, width: '48px', height: '48px' }" @click="handleCopy(color.hex)" />
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div class="flex flex-col gap-1 text-xs font-mono">
+                    <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
+                        color.hex }}</span></span>
+                    <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{
+                        getColorConversions(color.hex).rgb }}</span></span>
+                    <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{
+                        getColorConversions(color.hex).hsl }}</span></span>
+                    <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{
+                        getColorConversions(color.hex).hwb }}</span></span>
+                    <span>CMYK: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
+                        getColorConversions(color.hex).cmyk }}</span></span>
+                    <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{
+                        getColorConversions(color.hex).lch }}</span></span>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            </div>
+            <div class="mt-6">
+              <CardTitle class="text-base mb-2">Related Colors</CardTitle>
+              <div class="flex gap-2 flex-wrap">
+                <HoverCard v-for="color in secondaryPalette" :key="color.hex">
+                  <HoverCardTrigger>
+                    <div class="rounded aspect-square border border-border cursor-pointer transition hover:scale-105"
+                      :style="{ background: color.hex, width: '48px', height: '48px' }"
+                      @click="handleCopy(color.hex)" />
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <div class="flex flex-col gap-1 text-xs font-mono">
+                      <span class="font-bold">HEX: <span class="cursor-pointer" @click="handleCopy(color.hex)">{{
+                          color.hex }}</span></span>
+                      <span>RGB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).rgb)">{{
+                          getColorConversions(color.hex).rgb }}</span></span>
+                      <span>HSL: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hsl)">{{
+                          getColorConversions(color.hex).hsl }}</span></span>
+                      <span>HWB: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).hwb)">{{
+                          getColorConversions(color.hex).hwb }}</span></span>
+                      <span>CMYK: <span class="cursor-pointer"
+                          @click="handleCopy(getColorConversions(color.hex).cmyk)">{{
+                          getColorConversions(color.hex).cmyk }}</span></span>
+                      <span>LCH: <span class="cursor-pointer" @click="handleCopy(getColorConversions(color.hex).lch)">{{
+                          getColorConversions(color.hex).lch }}</span></span>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+      <!-- Color Analysis & Conversions -->
+      <section class="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Color Analysis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul class="text-sm space-y-1 font-mono">
+              <li>Valid CSS Color: <span
+                  :class="{ 'text-green-600': colorAnalysis.isValid, 'text-red-600': !colorAnalysis.isValid }">{{
+                  colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
+              <li>Format: {{ colorAnalysis.format }}</li>
+              <li>Hue: {{ colorAnalysis.hue }}°</li>
+              <li>Brightness: {{ colorAnalysis.brightness }}%</li>
+              <li>Luminance: {{ colorAnalysis.luminance }}%</li>
+              <li>Contrast on White: {{ colorAnalysis.contrast.toFixed(2) }}:1</li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul class="text-sm space-y-1 font-mono">
+              <li>HEX: {{ colorConversions.hex }}</li>
+              <li>RGB: {{ colorConversions.rgb }}</li>
+              <li>HSL: {{ colorConversions.hsl }}</li>
+              <li>HWB: {{ colorConversions.hwb }}</li>
+              <li>CMYK: {{ colorConversions.cmyk }}</li>
+              <li>LCH: {{ colorConversions.lch }}</li>
+              <li>CSS Keyword: {{ colorConversions.keyword }}</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+    </main>
   </div>
 </template>
