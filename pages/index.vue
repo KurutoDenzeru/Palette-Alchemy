@@ -136,7 +136,7 @@
           </Select>
           <div class="flex flex-col items-start w-full">
             <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
-            }}</span></label>
+                }}</span></label>
             <Slider v-model="gridColumns" :min="6" :max="36" :step="4" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-xs text-muted-foreground font-mono select-none">
               <span v-for="n in [6, 10, 14, 18, 22, 26, 30, 34, 36]" :key="n">{{ n }}</span>
@@ -195,7 +195,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 min-h-screen px-4 md:px-8 py-4 md:py-8 flex flex-col gap-8">
+    <main class="flex-1 min-h-screen flex flex-col gap-8 justify-center items-center px-4 md:px-8 py-4 md:py-8">
       <!-- Generated Palette & Related Colors -->
       <section>
         <Card class="w-full mx-auto">
@@ -327,7 +327,7 @@
             <ul class="text-sm space-y-1 font-mono">
               <li>Valid CSS Color: <span
                   :class="{ 'text-green-600': colorAnalysis.isValid, 'text-red-600': !colorAnalysis.isValid }">{{
-                    colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
+                  colorAnalysis.isValid ? 'Yes' : 'No' }}</span></li>
               <li>Format: {{ colorAnalysis.format }}</li>
               <li>Hue: {{ colorAnalysis.hue }}°</li>
               <li>Brightness: {{ colorAnalysis.brightness }}%</li>
