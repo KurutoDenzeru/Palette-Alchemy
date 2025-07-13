@@ -21,6 +21,7 @@
   import ExportPaletteDialog from '@/components/ui/ExportPaletteDialog.vue'
   import { Palette, Shuffle, Copy } from 'lucide-vue-next';
   import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
+  import ImageDropZone from '@/components/ui/ImageDropZone.vue'
 
   const MODES = [
     'analogous',
@@ -108,6 +109,7 @@
             <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
             <ColorPicker v-model="colorInput" />
           </div>
+          <ImageDropZone />
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
             <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
