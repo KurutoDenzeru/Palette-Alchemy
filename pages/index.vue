@@ -19,6 +19,8 @@
   import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
   import chroma from 'chroma-js'
   import ExportPaletteDialog from '@/components/ui/ExportPaletteDialog.vue'
+  import { Palette, Shuffle, Copy } from 'lucide-vue-next';
+  import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
 
   const MODES = [
     'analogous',
