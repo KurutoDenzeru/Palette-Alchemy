@@ -18,10 +18,11 @@
   import { useColorConversions } from '@/composables/palette/useColorConversions'
   import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
   import chroma from 'chroma-js'
-  import ExportPaletteDialog from '@/components/ui/ExportPaletteDialog.vue'
+  import ExportPaletteDialog from '@/components/ExportPaletteDialog.vue'
   import { Palette, Shuffle, Copy } from 'lucide-vue-next';
-  import ColorPicker from '@/components/ui/color-picker/ColorPicker.vue'
-  import ImageDropZone from '@/components/ui/ImageDropZone.vue'
+  import ColorPicker from '~/components/ColorPicker.vue'
+  import ImageDropZone from '@/components/ImageDropZone.vue'
+  import { useImageColors } from '@/composables/palette/useImageColors'
 
   const MODES = [
     'analogous',
@@ -40,6 +41,7 @@
   const paletteMode = ref<PaletteMode>('analogous')
   const gridColumns = ref([16])
   const imagePalette = ref<string[]>([])
+  const lastImageFile = ref<File | null>(null)
 
   const {
     palette,
@@ -82,16 +84,31 @@
     }
   }
 
-  function handleImageColors(colors: string[]) {
+  function handleImageColors(colors: string[], file?: File) {
     imagePalette.value = colors
-    // If imagePalette is set, override palette and secondaryPalette
     if (colors.length) {
       palette.value = colors.map(hex => ({ hex, rgba: chroma(hex).css('rgb') }))
-      secondaryPalette.value = [] // Or you can generate related colors from imagePalette if desired
+      // Generate related colors by brightening each extracted color
+      secondaryPalette.value = colors.map(hex => {
+        const lighter = chroma(hex).brighten(1).hex()
+        return { hex: lighter, rgba: chroma(lighter).css('rgb') }
+      })
     } else {
       generatePalette(gridColumns.value[0])
     }
+    if (file) lastImageFile.value = file
   }
+
+  watch(() => gridColumns.value[0], async (newCount) => {
+    if (lastImageFile.value) {
+      // Re-extract colors from the last image with new count
+      const { colors, extractColors } = useImageColors()
+      await extractColors(lastImageFile.value, newCount)
+      handleImageColors(colors.value, lastImageFile.value)
+    } else if (!imagePalette.value.length) {
+      generatePalette(newCount)
+    }
+  })
 
   // Regenerate palette when paletteMode or gridColumns changes
   watch([paletteMode, () => gridColumns.value[0]], () => {

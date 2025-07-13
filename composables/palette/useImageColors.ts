@@ -3,10 +3,10 @@ import { colord, extend } from 'colord'
 import mixPlugin from 'colord/plugins/mix'
 extend([mixPlugin])
 
-// Stub for extracting colors from an image
+// Extract colors from an image, with count parameter
 export const useImageColors = () => {
   const colors = ref<string[]>([])
-  const extractColors = async (file: File) => {
+  const extractColors = async (file: File, count: number = 8) => {
     const img = new Image()
     img.src = URL.createObjectURL(file)
     await new Promise(resolve => { img.onload = resolve })
@@ -24,9 +24,9 @@ export const useImageColors = () => {
       const hex = colord({ r, g, b }).toHex()
       colorMap.set(hex, (colorMap.get(hex) || 0) + 1)
     }
-    // Sort by frequency and pick top 8 colors
+    // Sort by frequency and pick top N colors
     const sorted = Array.from(colorMap.entries()).sort((a, b) => b[1] - a[1])
-    colors.value = sorted.slice(0, 8).map(([hex]) => hex)
+    colors.value = sorted.slice(0, count).map(([hex]) => hex)
   }
   return { colors, extractColors }
 }

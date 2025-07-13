@@ -27,7 +27,7 @@ function updateColor(e: Event) {
       type="color"
       :value="color"
       @input="updateColor"
-      class="w-10 h-10 rounded border cursor-pointer shadow"
+      class="w-10 h-10 rounded border cursor-pointer"
       aria-label="Pick color"
     />
   </div>
