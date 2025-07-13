@@ -39,6 +39,7 @@
   const colorInput = ref('#dc143c')
   const paletteMode = ref<PaletteMode>('analogous')
   const gridColumns = ref([16])
+  const imagePalette = ref<string[]>([])
 
   const {
     palette,
@@ -81,13 +82,28 @@
     }
   }
 
+  function handleImageColors(colors: string[]) {
+    imagePalette.value = colors
+    // If imagePalette is set, override palette and secondaryPalette
+    if (colors.length) {
+      palette.value = colors.map(hex => ({ hex, rgba: chroma(hex).css('rgb') }))
+      secondaryPalette.value = [] // Or you can generate related colors from imagePalette if desired
+    } else {
+      generatePalette(gridColumns.value[0])
+    }
+  }
+
   // Regenerate palette when paletteMode or gridColumns changes
   watch([paletteMode, () => gridColumns.value[0]], () => {
-    generatePalette(gridColumns.value[0])
+    if (!imagePalette.value.length) {
+      generatePalette(gridColumns.value[0])
+    }
   })
 
   // On initial load, generate palette with correct count
-  generatePalette(gridColumns.value[0])
+  if (!imagePalette.value.length) {
+    generatePalette(gridColumns.value[0])
+  }
 </script>
 
 <template>
@@ -98,18 +114,16 @@
       <div>
         <div class="flex items-center gap-3 mb-4">
           <NuxtImg src="/pallete.png" alt="Palette Alchemy Logo" class="w-16 h-16" loading="lazy" />
-          <span class="text-xl font-bold tracking-tight">Palette Alchemy</span>
         </div>
         <h2 class="text-lg font-semibold mb-1">Palette Controls</h2>
-        <p class="text-muted-foreground text-sm mb-4">Pick a color, palette mode, and grid size. Generate or randomize
-          your palette.</p>
+        <p class="text-muted-foreground text-sm mb-4">Pick a color, palette mode, and grid size. Generate or randomize your palette.</p>
         <div class="flex flex-col gap-4">
           <label class="text-sm font-medium">Base Color:</label>
           <div class="flex items-center gap-2 w-full">
             <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
             <ColorPicker v-model="colorInput" />
           </div>
-          <ImageDropZone />
+          <ImageDropZone :onColorsExtracted="handleImageColors" />
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
             <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
@@ -120,8 +134,7 @@
             </SelectContent>
           </Select>
           <div class="flex flex-col items-start w-full">
-            <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0]
-                }}</span></label>
+            <label class="text-sm font-medium mb-1">Grid Size: <span class="font-mono">{{ gridColumns[0] }}</span></label>
             <Slider v-model="gridColumns" :min="4" :max="32" :step="4" class="w-full" />
             <div class="flex justify-between w-full mt-1 text-sm text-muted-foreground font-mono select-none">
               <span v-for="n in [4, 8, 12, 16, 20, 24, 28, 32]" :key="n">{{ n }}</span>
@@ -139,7 +152,6 @@
           </div>
         </div>
       </div>
-
       <!-- Download Dialog Trigger (responsive) -->
       <div class="mt-4 md:mt-auto">
         <ExportPaletteDialog :palette="palette" :isLoading="isLoading" />
