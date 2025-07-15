@@ -19,10 +19,8 @@
   import { useColorAnalysis } from '@/composables/palette/useColorAnalysis'
   import chroma from 'chroma-js'
   import ExportPaletteDialog from '@/components/ExportPaletteDialog.vue'
-  import { Palette, Shuffle, Copy } from 'lucide-vue-next';
+  import { Palette, Shuffle, Copy, Instagram, Linkedin, Github } from 'lucide-vue-next';
   import ColorPicker from '~/components/ColorPicker.vue'
-  import ImageDropZone from '@/components/ImageDropZone.vue'
-  import { useImageColors } from '@/composables/palette/useImageColors'
 
   const MODES = [
     'analogous',
@@ -140,7 +138,6 @@
             <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
             <ColorPicker v-model="colorInput" />
           </div>
-          <ImageDropZone :onColorsExtracted="handleImageColors" />
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
             <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
@@ -189,8 +186,8 @@
               <HoverCard v-for="color in palette" :key="color.hex" class="w-full">
                 <HoverCardTrigger>
                   <div
-                    class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white hover:bg-accent/20"
                     :style="{ background: color.hex, width: '73px', height: '75px' }" @click="handleCopy(color.hex)" />
+                  <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div
@@ -221,13 +218,13 @@
                 <HoverCard v-for="color in secondaryPalette" :key="color.hex">
                   <HoverCardTrigger>
                     <div
-                      class="group rounded aspect-square border border-border cursor-pointer transition hover:scale-105 bg-white hover:bg-accent/20"
                       :style="{ background: color.hex, width: '73px', height: '75px' }"
                       @click="handleCopy(color.hex)" />
+                    <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <div
-                      class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 rounded-md min-w-[350px] transition-colors">
+                      class="flex flex-col text-sm font-mono group-hover:bg-accent/10 rounded-md min-w-[350px] transition-colors">
                       <div v-for="fmt in [
                         { label: 'HEX', value: color.hex },
                         { label: 'RGB', value: getColorConversions(color.hex).rgb },
@@ -288,6 +285,23 @@
           </CardContent>
         </Card>
       </section>
+      <!-- Footer -->
+      <footer class="mt-6 flex flex-col items-center gap-2 text-xs text-muted-foreground">
+        <div class="flex gap-4 mb-1">
+          <a href="https://instagram.com/kurutodenzeru" target="_blank" rel="noopener" aria-label="Instagram">
+            <Instagram class="w-5 h-5 hover:text-primary transition" />
+          </a>
+          <a href="https://linkedin.com/in/kurutodenzeru" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <Linkedin class="w-5 h-5 hover:text-primary transition" />
+          </a>
+          <a href="https://github.com/KurutoDenzeru" target="_blank" rel="noopener" aria-label="GitHub">
+            <Github class="w-5 h-5 hover:text-primary transition" />
+          </a>
+        </div>
+        <div class="text-center">
+          © {{ new Date().getFullYear() }} Palette Alchemacy. KurutoDenzeru. All rights reserved.
+        </div>
+      </footer>
     </main>
   </div>
 </template>
