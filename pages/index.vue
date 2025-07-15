@@ -36,7 +36,7 @@
   type PaletteMode = typeof MODES[number]
 
   const colorInput = ref('#dc143c')
-  const paletteMode = ref<PaletteMode>('analogous')
+  const paletteMode = ref<PaletteMode>('shades')
   const gridColumns = ref([16])
   const imagePalette = ref<string[]>([])
   const lastImageFile = ref<File | null>(null)
@@ -100,9 +100,6 @@
   watch(() => gridColumns.value[0], async (newCount) => {
     if (lastImageFile.value) {
       // Re-extract colors from the last image with new count
-      const { colors, extractColors } = useImageColors()
-      await extractColors(lastImageFile.value, newCount)
-      handleImageColors(colors.value, lastImageFile.value)
     } else if (!imagePalette.value.length) {
       generatePalette(newCount)
     }
