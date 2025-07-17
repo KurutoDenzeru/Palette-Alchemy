@@ -97,21 +97,6 @@
     }
   }
 
-  function handleImageColors(colors: string[], file?: File) {
-    imagePalette.value = colors
-    if (colors.length) {
-      palette.value = colors.map(hex => ({ hex, rgba: chroma(hex).css('rgb') }))
-      // Generate related colors by brightening each extracted color
-      secondaryPalette.value = colors.map(hex => {
-        const lighter = chroma(hex).brighten(1).hex()
-        return { hex: lighter, rgba: chroma(lighter).css('rgb') }
-      })
-    } else {
-      generatePalette(gridColumns.value[0])
-    }
-    if (file) lastImageFile.value = file
-  }
-
   watch(() => gridColumns.value[0], async (newCount) => {
     if (lastImageFile.value) {
       // Re-extract colors from the last image with new count
@@ -192,8 +177,8 @@
           <CardHeader>
             <CardTitle>Generated Palette:</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]}`"
+          <CardContent class="cursor-pointer">
+            <div :class="`grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-${gridColumns[0]} cursor-pointer`"
               style="display: flex; flex-wrap: wrap;">
               <HoverCard v-for="color in palette" :key="color.hex" class="w-full">
                 <HoverCardTrigger>
@@ -282,7 +267,7 @@
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Conversions</CardTitle>
+            <CardTitle>Conversions:</CardTitle>
           </CardHeader>
           <CardContent>
             <ul class="text-sm space-y-1 font-mono">
