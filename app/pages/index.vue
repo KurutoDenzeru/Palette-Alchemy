@@ -43,6 +43,9 @@
   const imagePalette = ref<string[]>([])
   const lastImageFile = ref<File | null>(null)
 
+  // Add selectedColor ref for analysis/conversions
+  const selectedColor = ref<string>(colorInput.value)
+
   const {
     palette,
     secondaryPalette,
@@ -51,8 +54,9 @@
     generateRandom,
   } = usePalette(colorInput, paletteMode)
 
-  const colorConversions = useColorConversions(colorInput)
-  const colorAnalysis = useColorAnalysis(colorInput)
+  // Use selectedColor for analysis/conversions
+  const colorConversions = useColorConversions(selectedColor)
+  const colorAnalysis = useColorAnalysis(selectedColor)
 
   const handleCopy = (hex: string) => {
     navigator.clipboard.writeText(hex)
@@ -69,6 +73,11 @@
       duration: 2000,
       position: 'bottom-right',
     })
+  }
+
+  // New: handle selecting a color for analysis/conversions
+  const handleSelectColor = (hex: string) => {
+    selectedColor.value = hex
   }
 
   const gridClass = computed(() => `grid-cols-${gridColumns.value[0]}`)
@@ -183,7 +192,9 @@
               <HoverCard v-for="color in palette" :key="color.hex" class="w-full">
                 <HoverCardTrigger>
                   <div
-                    :style="{ background: color.hex, width: '73px', height: '75px' }" @click="handleCopy(color.hex)" />
+                    :style="{ background: color.hex, width: '73px', height: '75px' }"
+                    @click="handleSelectColor(color.hex)"
+                  />
                   <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
                 </HoverCardTrigger>
                 <HoverCardContent>
@@ -216,7 +227,8 @@
                   <HoverCardTrigger>
                     <div
                       :style="{ background: color.hex, width: '73px', height: '75px' }"
-                      @click="handleCopy(color.hex)" />
+                      @click="handleSelectColor(color.hex)"
+                    />
                     <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
                   </HoverCardTrigger>
                   <HoverCardContent>
