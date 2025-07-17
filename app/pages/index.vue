@@ -21,6 +21,8 @@
   import ExportPaletteDialog from '@/components/ExportPaletteDialog.vue'
   import { Palette, Shuffle, Copy, Instagram, Linkedin, Github } from 'lucide-vue-next';
   import ColorPicker from '~/components/ColorPicker.vue'
+  import { Toaster, toast } from 'vue-sonner';
+  import 'vue-sonner/style.css';
 
   const MODES = [
     'analogous',
@@ -54,6 +56,19 @@
 
   const handleCopy = (hex: string) => {
     navigator.clipboard.writeText(hex)
+    toast.success(`Copied ${hex} to clipboard!`, {
+      class: 'rounded-xl shadow-lg border-2 border-gray-500 bg-gray-600 text-white text-base font-semibold',
+      style: {
+        background: '#fff',
+        color: '#000',
+        border: '2px solid #6B7280',
+        fontWeight: 600,
+        fontSize: '1rem',
+      },
+      description: 'Color value has been copied.',
+      duration: 2000,
+      position: 'bottom-right',
+    })
   }
 
   const gridClass = computed(() => `grid-cols-${gridColumns.value[0]}`)
@@ -300,5 +315,6 @@
         </div>
       </footer>
     </main>
+    <Toaster richColors position="bottom-right" />
   </div>
 </template>
