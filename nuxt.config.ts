@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt'
   ],
-  css: ['~/assets/css/main.css'],
+  css: ['~/app/assets/css/main.css'],
 
   vite: {
     plugins: [
