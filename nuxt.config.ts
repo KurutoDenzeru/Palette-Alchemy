@@ -22,20 +22,12 @@ export default defineNuxtConfig({
     },
   },
 
-  nitro: {
-    esbuild: {
-      options: {
-        target: 'esnext'
-      }
-    }
-  },
-
   // Nuxt Vitalizer
   vitalizer: {
     // Remove the render-blocking entry CSS
     // disableStylesheets: 'entry',
     // Remove preloading build resources
-    // disablePrefetchLinks: true
+    disablePrefetchLinks: true
   },
 
   // Shadnc Nuxt
