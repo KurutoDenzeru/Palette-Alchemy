@@ -297,10 +297,10 @@
       <!-- Footer -->
       <footer class="mt-6 flex flex-col items-center gap-2 text-xs text-muted-foreground">
         <div class="flex gap-4 mb-1">
-          <a href="https://instagram.com/kurutodenzeru" target="_blank" rel="noopener" aria-label="Instagram">
+          <a href="https://instagram.com/krtclcdy" target="_blank" rel="noopener" aria-label="Instagram">
             <Instagram class="w-5 h-5 hover:text-primary transition" />
           </a>
-          <a href="https://linkedin.com/in/kurutodenzeru" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <a href="https://linkedin.com/in/kurtcalacday" target="_blank" rel="noopener" aria-label="LinkedIn">
             <Linkedin class="w-5 h-5 hover:text-primary transition" />
           </a>
           <a href="https://github.com/KurutoDenzeru" target="_blank" rel="noopener" aria-label="GitHub">
