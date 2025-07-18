@@ -3,7 +3,6 @@
   import PaletteControls from '@/components/PaletteControls.vue'
   import PaletteDisplay from '@/components/PaletteDisplay.vue'
   import { useHead, useSeoMeta } from 'nuxt/app'
-  import "../assets/css/main.css"
 
   // State for communication between components
   const palette = ref<{ hex: string; rgba: string }[]>([])
