@@ -16,11 +16,6 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-
-    build: {
-      // turn off source maps in production
-      sourcemap: false,
-    },
   },
 
   // Nuxt Vitalizer
