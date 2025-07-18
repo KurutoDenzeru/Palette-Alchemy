@@ -23,6 +23,11 @@
   import ColorPicker from '~/components/ColorPicker.vue'
   import { Toaster, toast } from 'vue-sonner';
   import 'vue-sonner/style.css';
+  import Tooltip from '@/components/ui/tooltip/Tooltip.vue'
+  import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue'
+  import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue'
+  import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue'
+  import { Info } from 'lucide-vue-next'
 
   const MODES = [
     'analogous',
@@ -139,11 +144,32 @@
         <h2 class="text-lg font-semibold mb-1">Palette Controls</h2>
         <p class="text-muted-foreground text-sm mb-4">Pick a color, palette mode, and grid size. Generate or randomize your palette.</p>
         <div class="flex flex-col gap-4">
-          <label class="text-sm font-medium">Base Color:</label>
-          <div class="flex items-center gap-2 w-full">
-            <Input v-model="colorInput" class="w-full" placeholder="HEX or RGB" />
-            <ColorPicker v-model="colorInput" />
-          </div>
+          <TooltipProvider>
+            <label class="text-sm font-medium">Base Color:</label>
+            <div class="flex items-center gap-2 w-full relative">
+              <Tooltip>
+                <TooltipTrigger as-child>
+                  <div class="relative w-full">
+                    <Input v-model="colorInput" class="w-full pr-10" placeholder="HEX, RGB, HSL, or CSS color name" />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer">
+                      <Tooltip>
+                        <TooltipTrigger as-child>
+                          <Info class="w-4 h-4 text-muted-foreground hover:text-primary" />
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          <span class="font-mono text-xs">Supported: HEX, RGB, HSL, CSS color names (e.g. crimson)</span>
+                        </TooltipContent>
+                      </Tooltip>
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <span class="font-mono text-xs">Supported: HEX, RGB, HSL, CSS color names (e.g. crimson)</span>
+                </TooltipContent>
+              </Tooltip>
+              <ColorPicker v-model="colorInput" />
+            </div>
+          </TooltipProvider>
           <label class="text-sm font-medium">Color Harmony:</label>
           <Select v-model="paletteMode">
             <SelectTrigger class="w-full capitalize">{{ paletteMode }}</SelectTrigger>
