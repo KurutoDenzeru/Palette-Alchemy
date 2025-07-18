@@ -179,7 +179,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 min-h-screen flex flex-col gap-8 justify-center items-center px-4 md:px-8 py-4 md:py-8 overflow-auto">
+    <main class="flex-1 min-h-screen flex flex-col gap-4 justify-center items-center px-4 md:px-8 py-4 md:py-8 overflow-auto">
       <!-- Generated Palette & Related Colors -->
       <section class="w-full mx-auto">
         <Card>
