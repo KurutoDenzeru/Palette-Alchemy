@@ -199,7 +199,7 @@
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div
-                    class="flex flex-col gap-2 text-sm font-mono group-hover:bg-accent/10 rounded-md min-w-[350px] transition-colors">
+                    class="flex flex-col text-sm font-mono group-hover:bg-accent/10 rounded-md min-w-[350px] transition-colors">
                     <div v-for="fmt in [
                       { label: 'HEX', value: color.hex },
                       { label: 'RGB', value: getColorConversions(color.hex).rgb },
