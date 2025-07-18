@@ -151,26 +151,19 @@
           <TooltipProvider>
             <label class="text-sm font-medium">Base Color:</label>
             <div class="flex items-center gap-2 w-full relative">
-              <Tooltip>
-                <TooltipTrigger as-child>
-                  <div class="relative w-full">
-                    <Input v-model="colorInput" class="w-full pr-10" placeholder="HEX, RGB, HSL, or CSS color name" @keyup.enter="handleInputEnter" />
-                    <span class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer">
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Info class="w-4 h-4 text-muted-foreground hover:text-primary" />
-                        </TooltipTrigger>
-                        <TooltipContent side="top">
-                          <span class="font-mono text-xs">Supported: HEX, RGB, HSL, CSS color names (e.g. crimson)</span>
-                        </TooltipContent>
-                      </Tooltip>
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  <span class="font-mono text-xs">Supported: HEX, RGB, HSL, CSS color names (e.g. crimson)</span>
-                </TooltipContent>
-              </Tooltip>
+              <div class="relative w-full">
+                <Input v-model="colorInput" class="w-full pr-10" placeholder="HEX, RGB, HSL, or CSS color name" @keyup.enter="handleInputEnter" />
+                <span class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer">
+                  <Tooltip>
+                    <TooltipTrigger as-child>
+                      <Info class="w-4 h-4 text-muted-foreground hover:text-primary" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <span class="font-mono text-xs">Supported: HEX, RGB, HSL, CSS color names (e.g. crimson)</span>
+                    </TooltipContent>
+                  </Tooltip>
+                </span>
+              </div>
               <ColorPicker v-model="colorInput" />
             </div>
           </TooltipProvider>
@@ -223,9 +216,9 @@
                 <HoverCardTrigger>
                   <div
                     :style="{ background: color.hex, width: '73px', height: '75px' }"
-                    @click="handleSelectColor(color.hex)"
+                    @click="() => { handleSelectColor(color.hex); handleCopy(color.hex); }"
                   />
-                  <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
+                  <div class="w-full text-center text-xs font-mono mt-1" @click="handleCopy(color.hex)">{{ color.hex }}</div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div
@@ -257,9 +250,9 @@
                   <HoverCardTrigger>
                     <div
                       :style="{ background: color.hex, width: '73px', height: '75px' }"
-                      @click="handleSelectColor(color.hex)"
+                      @click="() => { handleSelectColor(color.hex); handleCopy(color.hex); }"
                     />
-                    <div class="w-full text-center text-xs font-mono mt-1">{{ color.hex }}</div>
+                    <div class="w-full text-center text-xs font-mono mt-1" @click="handleCopy(color.hex)">{{ color.hex }}</div>
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <div
@@ -342,6 +335,6 @@
         </div>
       </footer>
     </main>
-    <Toaster richColors position="bottom-right" />
+    <Toaster position="bottom-right" />
   </div>
 </template>
