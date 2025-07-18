@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import PaletteControls from '@/components/PaletteControls.vue'
   import PaletteDisplay from '@/components/PaletteDisplay.vue'
+  import { useHead, useSeoMeta } from 'nuxt/app'
 
   // State for communication between components
   const palette = ref<{ hex: string; rgba: string }[]>([])
@@ -23,6 +24,27 @@
   const handleColorSelected = (color: string) => {
     selectedColor.value = color
   }
+
+  useHead({
+    title: 'Palette Alchemy – Modern Color Palette Generator',
+    htmlAttrs: { lang: 'en' },
+    link: [
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+    ]
+  })
+
+  useSeoMeta({
+    title: 'Palette Alchemy – Modern Color Palette Generator',
+    description: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
+    ogTitle: 'Palette Alchemy – Modern Color Palette Generator',
+    ogDescription: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
+    ogImage: '/pallete.png',
+    ogUrl: 'https://palette-alchemy.vercel.app',
+    twitterTitle: 'Palette Alchemy – Modern Color Palette Generator',
+    twitterDescription: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
+    twitterImage: '/pallete.png',
+    twitterCard: 'summary_large_image',
+  })
 </script>
 
 <template>
