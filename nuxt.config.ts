@@ -10,12 +10,16 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt'
   ],
-  css: ['~/assets/css/tailwind.css'],
+  css: ['~/assets/css/main.css'],
 
   vite: {
     plugins: [
       tailwindcss(),
     ],
+
+    build: {
+      sourcemap: false,
+    },
   },
 
   // Nuxt Vitalizer
