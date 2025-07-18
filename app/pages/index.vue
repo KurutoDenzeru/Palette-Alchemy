@@ -38,11 +38,11 @@
     description: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
     ogTitle: 'Palette Alchemy – Modern Color Palette Generator',
     ogDescription: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
-    ogImage: '/pallete.png',
+    ogImage: '/OpenGraph.webp',
     ogUrl: 'https://palette-alchemy.vercel.app',
     twitterTitle: 'Palette Alchemy – Modern Color Palette Generator',
     twitterDescription: '🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.',
-    twitterImage: '/pallete.png',
+    twitterImage: '/OpenGraph.webp',
     twitterCard: 'summary_large_image',
   })
 </script>

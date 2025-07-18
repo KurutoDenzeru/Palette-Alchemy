@@ -1,3 +1,5 @@
+![PaletteAlchemy](/public/OpenGraph.webp)
+
 # Palette Alchemy
 
 🎨 Feature-rich color palette tool using Nuxt, TypeScript, Tailwind, and Shadcn/ui, letting designers generate palettes across color theories, analyze properties, export formats, and enjoy a responsive, elegant interface.
