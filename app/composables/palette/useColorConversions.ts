@@ -1,6 +1,12 @@
 import { computed, type Ref } from 'vue'
 import chroma from 'chroma-js'
 
+// Helper to sanitize color input (strip accidental ',hex' or similar)
+function sanitizeColorInput(input: string): string {
+  // Remove any trailing ',...' (e.g., ',hex', ',rgb', etc.)
+  return input.replace(/,[^,]+$/, '').trim()
+}
+
 const getKeyword = (hex: string) => {
   try {
     return chroma(hex).name()
@@ -19,7 +25,7 @@ const toHwb = (c: chroma.Color) => {
 
 export const useColorConversions = (colorInput: Ref<string>) => {
   return computed(() => {
-    const value = colorInput.value
+    const value = sanitizeColorInput(colorInput.value)
     if (!chroma.valid(value)) return { hex: '', rgb: '', hsl: '', hwb: '', cmyk: '', lch: '', keyword: '' }
     const c = chroma(value)
     return {
