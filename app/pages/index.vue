@@ -85,6 +85,10 @@
     selectedColor.value = hex
   }
 
+  const handleInputEnter = () => {
+    generatePalette(gridColumns.value[0])
+  }
+
   const gridClass = computed(() => `grid-cols-${gridColumns.value[0]}`)
 
   // Helper to get conversions for any color
@@ -150,7 +154,7 @@
               <Tooltip>
                 <TooltipTrigger as-child>
                   <div class="relative w-full">
-                    <Input v-model="colorInput" class="w-full pr-10" placeholder="HEX, RGB, HSL, or CSS color name" />
+                    <Input v-model="colorInput" class="w-full pr-10" placeholder="HEX, RGB, HSL, or CSS color name" @keyup.enter="handleInputEnter" />
                     <span class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer">
                       <Tooltip>
                         <TooltipTrigger as-child>
@@ -187,11 +191,11 @@
             </div>
           </div>
           <div class="flex gap-2 mt-2 flex-wrap">
-            <Button @click="generatePalette" :disabled="isLoading" class="w-full">
+            <Button @click="generatePalette(gridColumns[0])" :disabled="isLoading" class="w-full">
               <Palette class="w-5 h-5" />
               Generate Palette
             </Button>
-            <Button @click="generateRandom" variant="outline" class="w-full">
+            <Button @click="generateRandom(gridColumns[0])" variant="outline" class="w-full">
               <Shuffle class="w-5 h-5" />
               Generate Random
             </Button>

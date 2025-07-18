@@ -77,9 +77,9 @@ export const usePalette = (
     }
   }
 
-  const generateRandom = () => {
+  const generateRandom = (count = 6) => {
     colorInput.value = chroma.random().hex()
-    generatePalette()
+    generatePalette(count)
   }
 
   return {
