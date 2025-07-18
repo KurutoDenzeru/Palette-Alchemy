@@ -15,6 +15,7 @@
   import { Palette, Shuffle, Info } from 'lucide-vue-next'
   import ColorPicker from '~/components/ColorPicker.vue'
   import ExportPaletteDialog from '@/components/ExportPaletteDialog.vue'
+  import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 
   const MODES = [
     'analogous',
@@ -151,8 +152,13 @@
       </div>
     </div>
     <!-- Download Dialog Trigger (responsive) -->
-    <div class="mt-4 md:mt-auto">
-      <ExportPaletteDialog :palette="palette" :isLoading="isLoading" />
+    <div class="mt-4 md:mt-auto flex flex-row items-center justify-between gap-3">
+      <div class="flex-1">
+        <ExportPaletteDialog :palette="palette" :isLoading="isLoading" />
+      </div>
+      <div class="shrink-0">
+        <ThemeSwitcher />
+      </div>
     </div>
   </aside>
 </template>
